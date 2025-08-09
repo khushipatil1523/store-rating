@@ -1,26 +1,31 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StoreList from './pages/User/StoreList';
+import HomePage from './pages/HomePage';
+import Signup from './auth/Signup';
+import Login from './auth/Login';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import OwnerDashboard from './pages/StoreOwner/OwnerDashboard';
+import UserDashboard from './pages/User/UserDashboard';
+import Navbar from './pages/Navbar'; // Adjust path as needed
+import "./index.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/user/stores" element={<StoreList />} />
+          <Route path="/adminDashboard" element={<AdminDashboard/>}/>
+          <Route path='/ownerDashboard' element={<OwnerDashboard/>}/>
+          <Route path='/user' element={<UserDashboard/>}/>
+        </Routes>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
