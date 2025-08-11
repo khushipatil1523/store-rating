@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = {
-      id: decoded.id,       // ✅ match with token's payload
+      id: decoded.id,     
       role: decoded.role,
     };
 

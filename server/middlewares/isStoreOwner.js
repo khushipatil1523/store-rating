@@ -1,7 +1,5 @@
-// middlewares/isStoreOwner.js
 const isStoreOwner = (req, res, next) => {
   try {
-    // Check if user role is STORE_OWNER
     if (req.user.role !== 'STORE_OWNER') {
       return res.status(403).json({ 
         message: 'Access denied. Store owner privileges required.' 

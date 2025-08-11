@@ -52,7 +52,6 @@ function SearchBar({ searchTerm, onSearchChange, onClearSearch }) {
 
 // Store Card Component
 function StoreCard({ store, onClick, searchTerm }) {
-  // Highlight search matches
   const highlightText = (text, search) => {
     if (!search) return text;
     
@@ -75,12 +74,10 @@ function StoreCard({ store, onClick, searchTerm }) {
       onClick={onClick}
       className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
     >
-      {/* Store Image Placeholder */}
       <div className="h-48 bg-blue-100 flex items-center justify-center">
         <span className="text-blue-600 text-lg font-medium">{store.name}</span>
       </div>
 
-      {/* Store Info */}
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           {highlightText(store.name, searchTerm)}
@@ -117,7 +114,7 @@ function StoreCard({ store, onClick, searchTerm }) {
   );
 }
 
-// Store Details Component
+
 function StoreDetails({ store, onBack, onRatingSubmit, ratingsInput, onRatingChange }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
@@ -140,7 +137,6 @@ function StoreDetails({ store, onBack, onRatingSubmit, ratingsInput, onRatingCha
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button 
@@ -154,7 +150,6 @@ function StoreDetails({ store, onBack, onRatingSubmit, ratingsInput, onRatingCha
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-6">
-        {/* Store Header */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
           <div className="h-64 bg-blue-100 flex items-center justify-center">
             <span className="text-blue-600 text-2xl font-medium">{store.name}</span>
@@ -210,7 +205,6 @@ function StoreDetails({ store, onBack, onRatingSubmit, ratingsInput, onRatingCha
           </div>
         </div>
 
-        {/* Reviews Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">All Reviews</h2>
           
@@ -322,7 +316,6 @@ function UserDashboard() {
       if (!res.ok) throw new Error('Failed to submit rating');
       const result = await res.json();
 
-      // Update both stores list and selected store
       setStores(prevStores =>
         prevStores.map(store => {
           if (store.id === storeId) {
@@ -336,7 +329,6 @@ function UserDashboard() {
         })
       );
 
-      // Update selected store if it's the same one
       if (selectedStore && selectedStore.id === storeId) {
         setSelectedStore(prevStore => ({
           ...prevStore,
@@ -370,7 +362,6 @@ function UserDashboard() {
     );
   }
 
-  // Show store details if a store is selected
   if (selectedStore) {
     return (
       <StoreDetails 
@@ -386,7 +377,6 @@ function UserDashboard() {
   // Store listing view
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <h1 className="text-2xl font-bold text-gray-900">Store Directory</h1>
@@ -394,16 +384,13 @@ function UserDashboard() {
         </div>
       </div>
 
-      {/* Search and Results */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Search Bar */}
         <SearchBar 
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
           onClearSearch={handleClearSearch}
         />
 
-        {/* Search Results Info */}
         {searchTerm && (
           <div className="mb-4 text-center">
             <p className="text-gray-600">
@@ -415,7 +402,6 @@ function UserDashboard() {
           </div>
         )}
 
-        {/* Store Grid */}
         {filteredStores.length === 0 && !searchTerm ? (
           <div className="text-center py-12">
             <p className="text-gray-600">No stores available</p>

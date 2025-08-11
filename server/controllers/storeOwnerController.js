@@ -125,7 +125,6 @@ export const createStore = async (req, res) => {
       return res.status(400).json({ message: 'Store name, email, and address are required' });
     }
 
-    // Check if user already has a store
     const existingStore = await prisma.store.findUnique({
       where: { ownerId: storeOwnerId },
     });
@@ -134,7 +133,6 @@ export const createStore = async (req, res) => {
       return res.status(400).json({ message: 'You already have a store' });
     }
 
-    // Check if store email is taken
     const emailTaken = await prisma.store.findFirst({
       where: { email: email.trim().toLowerCase() },
     });

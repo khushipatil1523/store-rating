@@ -65,7 +65,7 @@ function AdminDashboard() {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch(`${BASE_URL}/store-owners`, {
-            // <-- Added this line
+           
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -217,7 +217,7 @@ function AdminDashboard() {
           </nav>
         </div>
 
-        {/* Main Content */}
+        
         <div className="flex-1 p-8">
           {/* Dashboard Section */}
           {activeSection === "dashboard" && (
@@ -282,7 +282,7 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Quick Overview */}
+            
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
@@ -370,7 +370,21 @@ function AdminDashboard() {
 
               <div className="max-w-2xl">
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-                  <form className="space-y-6">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit(e, "create-user", userForm, () =>
+                        setUserForm({
+                          name: "",
+                          email: "",
+                          password: "",
+                          address: "",
+                          role: "USER",
+                        })
+                      );
+                    }}
+                  >
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Full Name
@@ -381,6 +395,8 @@ function AdminDashboard() {
                         placeholder="Enter full name"
                         value={userForm.name}
                         onChange={(e) => handleInputChange(e, setUserForm)}
+                        minLength={20}
+                        maxLength={60}
                         required
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       />
@@ -396,6 +412,8 @@ function AdminDashboard() {
                         value={userForm.email}
                         onChange={(e) => handleInputChange(e, setUserForm)}
                         required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        title="Please enter a valid email address"
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       />
                     </div>
@@ -410,6 +428,10 @@ function AdminDashboard() {
                         value={userForm.password}
                         onChange={(e) => handleInputChange(e, setUserForm)}
                         required
+                        pattern={
+                          "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\[\\]{};':\"\\\\|,.<>/?]).{8,16}$"
+                        }
+                        title="Password must be 8-16 characters long, include at least one uppercase letter and one special character."
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       />
                     </div>
@@ -424,6 +446,7 @@ function AdminDashboard() {
                         value={userForm.address}
                         onChange={(e) => handleInputChange(e, setUserForm)}
                         required
+                        maxLength={400}
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       />
                     </div>
@@ -444,18 +467,7 @@ function AdminDashboard() {
                       </select>
                     </div>
                     <button
-                      type="button"
-                      onClick={(e) =>
-                        handleSubmit(e, "create-user", userForm, () =>
-                          setUserForm({
-                            name: "",
-                            email: "",
-                            password: "",
-                            address: "",
-                            role: "USER",
-                          })
-                        )
-                      }
+                      type="submit"
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center shadow-sm"
                     >
                       <User className="w-5 h-5 mr-2" />
@@ -481,7 +493,20 @@ function AdminDashboard() {
 
               <div className="max-w-2xl">
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-                  <form className="space-y-6">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit(e, "create-store", storeForm, () =>
+                        setStoreForm({
+                          name: "",
+                          email: "",
+                          address: "",
+                          ownerId: "",
+                        })
+                      );
+                    }}
+                  >
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Store Name
@@ -493,9 +518,12 @@ function AdminDashboard() {
                         value={storeForm.name}
                         onChange={(e) => handleInputChange(e, setStoreForm)}
                         required
+                        minLength={20} 
+                        maxLength={60}
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                       />
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Store Email
@@ -507,9 +535,12 @@ function AdminDashboard() {
                         value={storeForm.email}
                         onChange={(e) => handleInputChange(e, setStoreForm)}
                         required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        title="Please enter a valid email address"
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                       />
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Store Address
@@ -521,42 +552,35 @@ function AdminDashboard() {
                         value={storeForm.address}
                         onChange={(e) => handleInputChange(e, setStoreForm)}
                         required
+                        maxLength={400} 
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                       />
                     </div>
+
                     <div>
                       <label
-    htmlFor="ownerId"
-    className="block text-sm font-medium text-slate-700 mb-2"
-  >
-    Store Owner ID
-  </label>
-  <input
-    type="text"
-    id="ownerId"
-    name="ownerId"
-    placeholder="Paste owner ID here"
-    value={storeForm.ownerId}
-    onChange={(e) => handleInputChange(e, setStoreForm)}
-    required
-    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-  />
-  <p className="text-xs text-slate-400 mt-1">
-    You can copy this ID from the Users list.
-  </p>
+                        htmlFor="ownerId"
+                        className="block text-sm font-medium text-slate-700 mb-2"
+                      >
+                        Store Owner ID
+                      </label>
+                      <input
+                        type="text"
+                        id="ownerId"
+                        name="ownerId"
+                        placeholder="Paste owner ID here"
+                        value={storeForm.ownerId}
+                        onChange={(e) => handleInputChange(e, setStoreForm)}
+                        required
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                      />
+                      <p className="text-xs text-slate-400 mt-1">
+                        You can copy this ID from the Users list.
+                      </p>
                     </div>
+
                     <button
-                      type="button"
-                      onClick={(e) =>
-                        handleSubmit(e, "create-store", storeForm, () =>
-                          setStoreForm({
-                            name: "",
-                            email: "",
-                            address: "",
-                            ownerId: "",
-                          })
-                        )
-                      }
+                      type="submit"
                       className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center shadow-sm"
                     >
                       <Building2 className="w-5 h-5 mr-2" />
@@ -668,13 +692,11 @@ function AdminDashboard() {
                                 </span>
                               </div>
                               <p className="text-slate-600 mb-1">
-                                 {user.email}
+                                {user.email}
                               </p>
-                              <p className="text-slate-500">
-                                 {user.address}
-                              </p>
+                              <p className="text-slate-500">{user.address}</p>
                               <p className="text-xs text-slate-400 mt-1">
-                                 {user.id}
+                                {user.id}
                               </p>
                               {user.store && (
                                 <div className="mt-4 p-3 bg-slate-50 rounded-lg">
@@ -778,10 +800,10 @@ function AdminDashboard() {
                                 {store.name}
                               </h3>
                               <p className="text-slate-600 mb-1">
-                                 {store.email}
+                                {store.email}
                               </p>
                               <p className="text-slate-500 mb-3">
-                                 {store.address}
+                                {store.address}
                               </p>
                               <div className="flex items-center">
                                 <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />

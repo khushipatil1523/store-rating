@@ -11,17 +11,14 @@ const handleError = (res, error, defaultMessage = 'An error occurred') => {
   });
 };
 
-// ✅ Admin: Create Normal User or Store Owner
 export const createUserByAdmin = async (req, res) => {
   try {
     const { name, email, password, address, role } = req.body;
 
-    // Validate required fields
     if (!name || !email || !password || !address || !role) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Only allow USER or STORE_OWNER
     if (!['USER', 'STORE_OWNER'].includes(role)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
@@ -49,7 +46,6 @@ export const createUserByAdmin = async (req, res) => {
   }
 };
 
-// ✅ Admin: Create Store for Store Owner (with unique ownerId check)
 export const createStoreByAdmin = async (req, res) => {
   try {
     const { name, email, address, ownerId } = req.body;
@@ -58,13 +54,11 @@ export const createStoreByAdmin = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Verify owner exists and is STORE_OWNER
     const owner = await prisma.user.findUnique({ where: { id: ownerId } });
     if (!owner || owner.role !== 'STORE_OWNER') {
       return res.status(400).json({ message: 'Owner must be a valid STORE_OWNER' });
     }
 
-    // Check if this owner already owns a store (unique ownerId constraint)
     const existingStoreForOwner = await prisma.store.findUnique({
       where: { ownerId }
     });
@@ -72,13 +66,11 @@ export const createStoreByAdmin = async (req, res) => {
       return res.status(400).json({ message: 'This owner already has a store' });
     }
 
-    // Also check if store email already exists
     const existingStore = await prisma.store.findUnique({ where: { email } });
     if (existingStore) {
       return res.status(409).json({ message: 'Store with this email already exists' });
     }
 
-    // Create the store
     const newStore = await prisma.store.create({
       data: {
         name,
@@ -194,7 +186,6 @@ export const getAllStores = async (req, res) => {
   }
 };
 
-// Get all store owners (users with role STORE_OWNER)
 export const getStoreOwners = async (req, res) => {
   try {
     const owners = await prisma.user.findMany({
