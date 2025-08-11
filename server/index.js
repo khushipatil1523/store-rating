@@ -11,7 +11,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
+  origin: "*", // Your frontend URL
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
