@@ -1,18 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StoreList from "./pages/User/StoreList";
 import HomePage from "./pages/HomePage";
 import Signup from "./auth/Signup";
 import Login from "./auth/Login";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import OwnerDashboard from "./pages/StoreOwner/OwnerDashboard";
 import UserDashboard from "./pages/User/UserDashboard";
-import Navbar from "./pages/Navbar"; // Adjust path as needed
-import RequireAuth from "./auth/RequireAuth"; // Add this!
+import Navbar from "./pages/Navbar"; 
+import RequireAuth from "./auth/RequireAuth";
 import "./index.css";
 import ChangePassword from "./auth/ChangePassword";
 
 function App() {
-  // Logout function you can pass down to Navbar as prop if needed
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
