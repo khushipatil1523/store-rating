@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String   @db.VarChar(60)
+  email    String   @unique @db.VarChar(255)
+  password String
+  address  String   @db.VarChar(400)
+  role     Role
+
+  // If the user is a store owner, they can own one store
+  store    Store?   @relation("StoreOwner")
+
+  // If the user is a normal user, they can give many ratings
+  ratings  Rating[]
+}
+
+model Store {
+  id       String   @id @default(uuid())
+  name     String   @db.VarChar(60)
+  email    String   @unique @db.VarChar(255)
+  address  String   @db.VarChar(400)
+
+  // Every store must have one owner
+  ownerId  String   @unique
+  owner    User     @relation("StoreOwner", fields: [ownerId], references: [id])
+
+  // A store can have many ratings
+  ratings  Rating[]
+}
+
+model Rating {
+  id       String   @id @default(uuid())
+  value    Int      // Should be between 1 to 5
+  userId   String
+  storeId  String
+
+  // User who submitted the rating
+  user     User     @relation(fields: [userId], references: [id])
+
+  // Store being rated
+  store    Store    @relation(fields: [storeId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  USER
+  STORE_OWNER
+}
